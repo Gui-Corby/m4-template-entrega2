@@ -25,9 +25,9 @@ export class BooksServices implements IbooksServices {
         return newBook;
     }
 
-    getMany(search?: string, name?: string, pages?: string, category?: string): Ibook[] {
+    getMany(search?: string, pages?: string, category?: string): Ibook[] {
         const booksList = booksDatabase.filter(book => {
-            const nameRule = name ? book.name.toLowerCase().includes(name.toLowerCase()) : true;
+            const nameRule = search ? book.name.toLowerCase().includes(search.toLowerCase()) : true;
             const categoryRule = category ? (book.category ? book.category.toLocaleLowerCase().includes(category.toLowerCase()) : false) : true;
 
             return nameRule && categoryRule;
@@ -36,12 +36,15 @@ export class BooksServices implements IbooksServices {
         return booksList;
     }
 
-    getOne(id: string): Ibook {
-        const book = booksDatabase.find((book) => book.id === Number(id)) as Ibook
-        ;
+    getOne(id: string, search?: string): Ibook {
         
-        return book;
+        const bookById = booksDatabase.find((book) => book.id === Number(id)) as Ibook;
+
+        if (search) {
+            const nameRule = bookById.name.toLowerCase().includes(search.toLowerCase())
+        }
     
+        return bookById;
     }
 
     delete(id: string): void {
@@ -50,11 +53,11 @@ export class BooksServices implements IbooksServices {
         booksDatabase.splice(index, 1);
     }
 
-    update(body: Partial<TCreateBody>, id: string): Ibook {
+    update(body: Partial<TCreateBody> , id: string): Ibook {
 
         const currentBook = booksDatabase.find((book) => book.id === Number(id)) as Ibook;
 
-        const newBook = { ...currentBook, ...body, updatedAt: new Date() };
+        const newBook = { ...currentBook, ...body, updatedAt: new Date() } as Ibook;
 
         const index = booksDatabase.findIndex((book) => book.id === Number(id));
 

@@ -7,5 +7,6 @@ export interface Ibook {
     updatedAt: Date;
 }
 
+
 export type TCreateBody = Omit<Ibook, "id" | "createdAt" | "updatedAt">;
 export type TUpdateBody = Partial<TCreateBody>;

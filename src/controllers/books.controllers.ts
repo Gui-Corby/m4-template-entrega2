@@ -19,20 +19,22 @@ export class BooksControllers implements IBooksControllers {
     }
 
     getMany(req: Request, res: Response): Response {
-        const { name, pages, category } = req.query;
+        const { search , pages, category } = req.query;
 
         const booksServices = new BooksServices();
 
-        const getMany = booksServices.getMany(name as string, pages as string, category as string);
+        const getMany = booksServices.getMany(search as string, pages as string, category as string);
 
         return res.status(200).json(getMany);
     }
 
     getOne(req: Request, res: Response): Response {
 
+        const { search } = req.query;
+
         const booksServices = new BooksServices();
 
-        const getOne = booksServices.getOne(req.params.id);
+        const getOne = booksServices.getOne(req.params.id, search as string);
 
         return res.status(200).json(getOne);
     }
